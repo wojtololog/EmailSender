@@ -1,5 +1,6 @@
 package com.intern.gui;
 
+import com.intern.email.SSLEmailSender;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -10,10 +11,14 @@ public class FXApp extends Application {
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(new Pane(),800, 600));
         stage.setTitle("Hallo Koty!");
+        System.out.println("Done");
         stage.show();
     }
 
     public static void main(String[] args) {
+        SSLEmailSender sslEmailSender = new SSLEmailSender();
+        sslEmailSender.send("wojtololog@gmail.com", "dosilly.darek@gmail.com");
+        System.out.println("Done");
         launch(args);
     }
 }
