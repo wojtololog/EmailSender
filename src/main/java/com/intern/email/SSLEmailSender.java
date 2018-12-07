@@ -8,33 +8,20 @@ import java.util.Properties;
 public class SSLEmailSender {
 
     public void send(String from, String to) {
-        Properties props = System.getProperties();
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-
-
-        Session session = Session.getInstance(props,
+        Session session = Session.getInstance(createSessionProperties(),
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("wojtololog@gmail.com","Wa4H9tA1oN");
+                        return new PasswordAuthentication("ppwj.andrzejkowalski","WojciecHl@c69");
                     }
                 });
 
         try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject("Testing Subject");
-            message.setText("Dear Mail Crawler," +
-                    "\n\n No spam to my email, please!");
+            Message messageToSend = buildMessage(session, from, to);
 
             Transport transport = session.getTransport("smtp");
-            transport.connect("smtp.gmail.com","wojtololog", "Wa4H9tA1oN");
-            Transport.send(message, message.getAllRecipients());
+            transport.connect("smtp.gmail.com","ppwj.andrzejkowalski", "WojciecHl@c69");
+            Transport.send(messageToSend, messageToSend.getAllRecipients());
             transport.close();
 
             System.out.println("Done");
@@ -42,5 +29,29 @@ public class SSLEmailSender {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Message buildMessage(Session session, String from, String to) {
+        Message message = new MimeMessage(session);
+        try {
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject("Testing Subject");
+            message.setText("Dear Pawel Lacheta," +
+                    "\n\n prosze przepisac zeszyty !");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+       return message;
+    }
+
+    private Properties createSessionProperties() {
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.auth", "true");
+        return properties;
     }
 }
