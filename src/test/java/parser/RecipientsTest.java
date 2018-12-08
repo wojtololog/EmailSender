@@ -14,9 +14,8 @@ import java.util.ArrayList;
 public class RecipientsTest {
 
     @Test
-    public void singleRecipientParse() throws ParsingException, FileNotFoundException {
-        File initialFile = new File("src/test/resources/parsers/recipients/singleRecipient.txt");
-        InputStream targetStream = new FileInputStream(initialFile);
+    public void singleRecipientParse() throws ParsingException {
+        InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/recipients/singleRecipient.txt");
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
         ArrayList<String> toRecipients = recipientsParser.getRecipients().getNormalSenders();
@@ -25,9 +24,8 @@ public class RecipientsTest {
     }
 
     @Test
-    public void singleRecipientWithSpaceParse() throws ParsingException, FileNotFoundException {
-        File initialFile = new File("src/test/resources/parsers/recipients/singleRecipientWithSpace.txt");
-        InputStream targetStream = new FileInputStream(initialFile);
+    public void singleRecipientWithSpaceParse() throws ParsingException {
+        InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/recipients/singleRecipientWithSpace.txt");
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
         ArrayList<String> toRecipients = recipientsParser.getRecipients().getNormalSenders();
@@ -36,9 +34,8 @@ public class RecipientsTest {
     }
 
     @Test
-    public void multipleRecipientParse() throws ParsingException, FileNotFoundException {
-        File initialFile = new File("src/test/resources/parsers/recipients/multipleRecipient.txt");
-        InputStream targetStream = new FileInputStream(initialFile);
+    public void multipleRecipientParse() throws ParsingException {
+        InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/recipients/multipleRecipient.txt");
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
         ArrayList<String> doRecipients = recipientsParser.getRecipients().getNormalSenders();

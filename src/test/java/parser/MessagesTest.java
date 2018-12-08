@@ -13,9 +13,8 @@ import java.io.InputStream;
 public class MessagesTest {
 
     @Test
-    public void fullMessageParsing() throws FileNotFoundException, ParsingException {
-        File initialFile = new File("src/test/resources/parsers/message/fullMessage.txt");
-        InputStream targetStream = new FileInputStream(initialFile);
+    public void fullMessageParsing() throws ParsingException {
+        InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/message/fullMessage.txt");
         MessageParser messageParser = new MessageParser(targetStream);
         messageParser.parse();
         String subject = messageParser.getMessage().getSubject();
@@ -29,17 +28,15 @@ public class MessagesTest {
     }
 
     @Test(expected = ParsingException.class)
-    public void emptyMessageParsing() throws FileNotFoundException, ParsingException {
-        File initialFile = new File("src/test/resources/parsers/message/emptyMessage.txt");
-        InputStream targetStream = new FileInputStream(initialFile);
+    public void emptyMessageParsing() throws ParsingException {
+        InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/message/emptyMessage.txt");
         MessageParser messageParser = new MessageParser(targetStream);
         messageParser.parse();
     }
 
     @Test(expected = ParsingException.class)
-    public void noContentInMessage() throws FileNotFoundException, ParsingException {
-        File initialFile = new File("src/test/resources/parsers/message/noContentMessage.txt");
-        InputStream targetStream = new FileInputStream(initialFile);
+    public void noContentInMessage() throws ParsingException {
+        InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/message/noContentMessage.txt");
         MessageParser messageParser = new MessageParser(targetStream);
         messageParser.parse();
     }
