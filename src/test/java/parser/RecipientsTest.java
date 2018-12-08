@@ -15,7 +15,7 @@ public class RecipientsTest {
 
     @Test
     public void singleRecipientParse() throws ParsingException, FileNotFoundException {
-        File initialFile = new File("src/test/resources/singleRecipient.txt");
+        File initialFile = new File("src/test/resources/parsers/recipients/singleRecipient.txt");
         InputStream targetStream = new FileInputStream(initialFile);
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
@@ -26,7 +26,7 @@ public class RecipientsTest {
 
     @Test
     public void singleRecipientWithSpaceParse() throws ParsingException, FileNotFoundException {
-        File initialFile = new File("src/test/resources/singleRecipientWithSpace.txt");
+        File initialFile = new File("src/test/resources/parsers/recipients/singleRecipientWithSpace.txt");
         InputStream targetStream = new FileInputStream(initialFile);
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
@@ -37,7 +37,7 @@ public class RecipientsTest {
 
     @Test
     public void multipleRecipientParse() throws ParsingException, FileNotFoundException {
-        File initialFile = new File("src/test/resources/multipleRecipient.txt");
+        File initialFile = new File("src/test/resources/parsers/recipients/multipleRecipient.txt");
         InputStream targetStream = new FileInputStream(initialFile);
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();

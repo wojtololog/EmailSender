@@ -21,7 +21,7 @@ public class RecipientsParser {
         bufferedReader = new BufferedReader(new InputStreamReader(this.inputWithRecipients));
         try {
             nextLine = bufferedReader.readLine();
-            if (nextLine.isEmpty()) {
+            if (nextLine == null) {
                 throw new ParsingException();
             }
             addNewRecipient(nextLine);
