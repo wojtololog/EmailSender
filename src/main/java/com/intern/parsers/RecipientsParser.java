@@ -38,8 +38,12 @@ public class RecipientsParser {
 
     private void addNewRecipient(String textLine) {
         String[] splittedLine = textLine.split(";");
-        String recipientInfo = splittedLine[0];
-        String recipientEmail = splittedLine[1];
+        if(splittedLine.length != 2) {
+            throw new IllegalArgumentException("Recipient type with email is formatted in wrong way!");
+        }
+
+        String recipientInfo = splittedLine[0].trim();
+        String recipientEmail = splittedLine[1].trim();
 
         switch (recipientInfo) {
             case "DO":
