@@ -1,22 +1,26 @@
 package com.intern.gui;
 
-import com.intern.email.SSLEmailSender;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class FXApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(new Pane(),800, 600));
-        stage.setTitle("Hallo Koty!");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(this.getClass().getResource("/fxml/StackPane.fxml"));
+        StackPane stackPane = fxmlLoader.load();
+
+        Scene scene = new Scene(stackPane);
+        stage.setScene(scene);
+        stage.setTitle("EmailSender");
         stage.show();
     }
 
     public static void main(String[] args) {
-        SSLEmailSender sslEmailSender = new SSLEmailSender();
-        sslEmailSender.send("ppwjj.andrzejkowalski@gmail.com", "wojtololog@gmail.com");
+        //sslEmailSender.send("ppwjj.andrzejkowalski@gmail.com", "wojtololog@gmail.com");
         launch(args);
     }
 }
