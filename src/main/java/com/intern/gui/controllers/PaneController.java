@@ -1,11 +1,21 @@
 package com.intern.gui.controllers;
 
+import com.intern.email.SSLEmailSender;
+import com.intern.model.Message;
+import com.intern.model.Recipients;
+import com.intern.parsers.MessageParser;
+import com.intern.parsers.RecipientsParser;
+import com.sun.mail.iap.ParsingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class PaneController {
     @FXML
@@ -24,6 +34,9 @@ public class PaneController {
     private FileChooser fileChooser;
     private Stage stage;
 
+    private MessageParser messageParser;
+    private RecipientsParser recipientsParser;
+
     @FXML
     void initialize() {
         recipientsButton.setText("Add recipients");
@@ -38,17 +51,47 @@ public class PaneController {
     public void onMouseMessageButtonClicked() {
         stage = (Stage) mainWindow.getScene().getWindow();
         fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose File");
-        fileChooser.showOpenDialog(stage);
+        fileChooser.setTitle("Choose File with message");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT","*.txt"));
+        File file = fileChooser.showOpenDialog(stage);
+        if(file != null) {
+            try {
+                messageParser = new MessageParser(new FileInputStream(file));
+                messageParser.parse();
+                messageLabel.setText("File selected: " + file.getName());
+            } catch (FileNotFoundException | ParsingException e) {
+                messageLabel.setText(e.toString());
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
     public void onMouseRecipientsButtonClicked() {
-
+        stage = (Stage) mainWindow.getScene().getWindow();
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose file with recipients");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT","*.txt"));
+        File file = fileChooser.showOpenDialog(stage);
+        if(file != null) {
+            try {
+                recipientsParser = new RecipientsParser(new FileInputStream(file));
+                recipientsParser.parse();
+                recipientsLabel.setText("File selected: " + file.getName());
+            } catch (FileNotFoundException | ParsingException e) {
+                recipientsLabel.setText(e.toString());
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
     public void onMouseSendButtonClicked() {
-
+        if(messageParser != null && recipientsParser != null) {
+            Recipients recipients = recipientsParser.getRecipients();
+            Message message = messageParser.getMessage();
+            SSLEmailSender sslEmailSender = new SSLEmailSender(message, recipients);
+            sslEmailSender.send("ppwjj.andrzejkowalski@gmail.com");
+        }
     }
 }
