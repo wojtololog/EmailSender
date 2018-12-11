@@ -1,6 +1,7 @@
 package com.intern.gui.controllers;
 
 import com.intern.email.SSLEmailSender;
+import com.intern.exceptions.AppException;
 import com.intern.model.Message;
 import com.intern.model.Recipients;
 import com.intern.parsers.MessageParser;
@@ -29,6 +30,8 @@ public class PaneController {
     @FXML
     private Label messageLabel;
     @FXML
+    private Label logLabel;
+    @FXML
     private Pane mainWindow;
 
     private FileChooser fileChooser;
@@ -37,12 +40,20 @@ public class PaneController {
     private MessageParser messageParser;
     private RecipientsParser recipientsParser;
 
+    private boolean isMessageFileParsed, isRecipientsFileParsed;
+
     @FXML
     void initialize() {
         recipientsButton.setText("Add recipients");
         messageButton.setText("Add content of message");
         sendButton.setText("Send");
+        resetLabels();
+        logLabel.setText("Welcome to EmailSender !");
+        isMessageFileParsed = false;
+        isRecipientsFileParsed = false;
+    }
 
+    private void resetLabels() {
         recipientsLabel.setText("Choose txt file with recipients");
         messageLabel.setText("Choose txt file with message content");
     }
@@ -58,9 +69,11 @@ public class PaneController {
             try {
                 messageParser = new MessageParser(new FileInputStream(file));
                 messageParser.parse();
+                isMessageFileParsed = true;
                 messageLabel.setText("File selected: " + file.getName());
-            } catch (FileNotFoundException | ParsingException e) {
-                messageLabel.setText(e.toString());
+                logLabel.setText("File with message successfully added !");
+            } catch (FileNotFoundException | AppException e) {
+                logLabel.setText(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -77,9 +90,11 @@ public class PaneController {
             try {
                 recipientsParser = new RecipientsParser(new FileInputStream(file));
                 recipientsParser.parse();
+                isRecipientsFileParsed = true;
                 recipientsLabel.setText("File selected: " + file.getName());
-            } catch (FileNotFoundException | ParsingException e) {
-                recipientsLabel.setText(e.toString());
+                logLabel.setText("File with recipients successfully added !");
+            } catch (FileNotFoundException | AppException e) {
+                logLabel.setText(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -87,11 +102,17 @@ public class PaneController {
 
     @FXML
     public void onMouseSendButtonClicked() {
-        if(messageParser != null && recipientsParser != null) {
+        if(isRecipientsFileParsed && isMessageFileParsed) {
             Recipients recipients = recipientsParser.getRecipients();
             Message message = messageParser.getMessage();
             SSLEmailSender sslEmailSender = new SSLEmailSender(message, recipients);
             sslEmailSender.send("ppwjj.andrzejkowalski@gmail.com");
+            logLabel.setText("Message was send successfully !");
+            isMessageFileParsed = false;
+            isRecipientsFileParsed = false;
+            resetLabels();
+        } else {
+            logLabel.setText("Please add files with recipients and message !");
         }
     }
 }

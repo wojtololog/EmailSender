@@ -1,5 +1,7 @@
 package com.intern.parsers;
 
+import com.intern.exceptions.AppException;
+import com.intern.exceptions.ExceptionMessages;
 import com.intern.model.Recipients;
 import com.sun.mail.iap.ParsingException;
 
@@ -17,12 +19,12 @@ public class RecipientsParser {
         recipients = new Recipients();
     }
 
-    public void parse() throws ParsingException {
+    public void parse() throws AppException {
         bufferedReader = new BufferedReader(new InputStreamReader(this.inputWithRecipients));
         try {
             nextLine = bufferedReader.readLine();
             if (nextLine == null) {
-                throw new ParsingException();
+                throw new AppException(ExceptionMessages.EMPTY_FILE);
             }
             addNewRecipient(nextLine);
 
@@ -36,10 +38,10 @@ public class RecipientsParser {
         }
     }
 
-    private void addNewRecipient(String textLine) {
+    private void addNewRecipient(String textLine) throws AppException {
         String[] splittedLine = textLine.split(";");
         if(splittedLine.length != 2) {
-            throw new IllegalArgumentException("Recipient type with email is formatted in wrong way!");
+            throw new AppException(ExceptionMessages.WRONG_RECIPIENT_FORMAT);
         }
 
         String recipientInfo = splittedLine[0].trim();

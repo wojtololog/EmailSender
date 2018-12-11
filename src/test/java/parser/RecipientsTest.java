@@ -1,5 +1,6 @@
 package parser;
 
+import com.intern.exceptions.AppException;
 import com.intern.parsers.RecipientsParser;
 import com.sun.mail.iap.ParsingException;
 import org.junit.Assert;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class RecipientsTest {
 
     @Test
-    public void singleRecipientParse() throws ParsingException {
+    public void singleRecipientParse() throws AppException {
         InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/recipients/singleRecipient.txt");
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
@@ -24,7 +25,7 @@ public class RecipientsTest {
     }
 
     @Test
-    public void singleRecipientWithSpaceParse() throws ParsingException {
+    public void singleRecipientWithSpaceParse() throws AppException {
         InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/recipients/singleRecipientWithSpace.txt");
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();
@@ -34,7 +35,7 @@ public class RecipientsTest {
     }
 
     @Test
-    public void multipleRecipientParse() throws ParsingException {
+    public void multipleRecipientParse() throws AppException {
         InputStream targetStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("parsers/recipients/multipleRecipient.txt");
         RecipientsParser recipientsParser = new RecipientsParser(targetStream);
         recipientsParser.parse();

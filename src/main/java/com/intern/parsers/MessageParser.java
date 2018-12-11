@@ -1,5 +1,7 @@
 package com.intern.parsers;
 
+import com.intern.exceptions.AppException;
+import com.intern.exceptions.ExceptionMessages;
 import com.intern.model.Message;
 import com.sun.mail.iap.ParsingException;
 
@@ -20,18 +22,18 @@ public class MessageParser {
         this.inputWithMessage = inputWithMessage;
     }
 
-    public void parse() throws ParsingException {
+    public void parse() throws AppException {
         bufferedReader = new BufferedReader(new InputStreamReader(this.inputWithMessage));
         try {
             nextLine = bufferedReader.readLine();
             if (nextLine == null) {
-                throw new ParsingException();
+                throw new AppException(ExceptionMessages.EMPTY_FILE);
             }
             String parsedSubject = nextLine.trim();
 
             nextLine = bufferedReader.readLine();
             if (nextLine == null) {
-                throw new ParsingException();
+                throw new AppException(ExceptionMessages.NO_SUBJECT);
             }
 
             stringBuilder = new StringBuilder();
