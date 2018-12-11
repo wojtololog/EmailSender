@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class FXApp extends Application {
@@ -21,7 +20,6 @@ public class FXApp extends Application {
     }
 
     public static void main(String[] args) {
-        //sslEmailSender.send("ppwjj.andrzejkowalski@gmail.com", "wojtololog@gmail.com");
         launch(args);
     }
 }

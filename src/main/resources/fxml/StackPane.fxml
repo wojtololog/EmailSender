@@ -12,10 +12,12 @@
       <Button fx:id="sendButton" layoutX="628.0" layoutY="479.0" mnemonicParsing="false" onMouseClicked="#onMouseSendButtonClicked" prefHeight="51.0" prefWidth="122.0" text="Button" />
       <Label fx:id="recipientsLabel" layoutX="286.0" layoutY="58.0" prefHeight="29.0" prefWidth="299.0" text="Label" />
       <Label fx:id="messageLabel" layoutX="286.0" layoutY="160.0" prefHeight="29.0" prefWidth="299.0" text="Label" />
-      <Label fx:id="logLabel" layoutX="70.0" layoutY="302.0" prefHeight="68.0" prefWidth="730.0" text="Label">
+      <Label fx:id="logLabel" layoutX="71.0" layoutY="381.0" prefHeight="68.0" prefWidth="730.0" text="Label">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
+      <Button fx:id="attachmentButton" layoutX="61.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#onMouseAttachmentButtonClicked" prefHeight="51.0" prefWidth="195.0" text="Button" />
+      <Label fx:id="attachmentLabel" layoutX="287.0" layoutY="270.0" prefHeight="29.0" prefWidth="299.0" text="Label" />
    </children>
 </Pane>

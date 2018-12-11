@@ -1,21 +1,25 @@
 package com.intern.email;
 
+import com.intern.model.AttachmentParameters;
 import com.intern.model.Recipients;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
 public class SSLEmailSender {
     private com.intern.model.Message message;
     private Recipients recipients;
+    private AttachmentParameters attachmentParameters;
 
-    public SSLEmailSender(com.intern.model.Message message, Recipients recipients) {
+    public SSLEmailSender(com.intern.model.Message message, Recipients recipients, AttachmentParameters attachmentParameters) {
         this.message = message;
         this.recipients = recipients;
+        this.attachmentParameters = attachmentParameters;
     }
 
     public void send(String from) {
@@ -49,10 +53,26 @@ public class SSLEmailSender {
             setAllRecipients(message);
             message.setSubject(this.message.getSubject());
             message.setText(this.message.getContent());
+            if(attachmentParameters != null) {
+                message.setContent(createMultipartMessage());
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
         }
        return message;
+    }
+
+    private Multipart createMultipartMessage() throws MessagingException {
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        Multipart multipart = new MimeMultipart();
+
+        String file = attachmentParameters.getPath();
+        String fileName = attachmentParameters.getFileName();
+        DataSource source = new FileDataSource(file);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(fileName);
+        multipart.addBodyPart(messageBodyPart);
+        return multipart;
     }
 
     private void setAllRecipients(Message message) throws MessagingException {
