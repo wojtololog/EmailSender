@@ -9,17 +9,21 @@ import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 public class SSLEmailSender {
     private com.intern.model.Message message;
     private Recipients recipients;
     private AttachmentParameters attachmentParameters;
+    private Date dateToSend;
 
-    public SSLEmailSender(com.intern.model.Message message, Recipients recipients, AttachmentParameters attachmentParameters) {
+    public SSLEmailSender(com.intern.model.Message message, Recipients recipients, AttachmentParameters attachmentParameters, Date dateToSend) {
         this.message = message;
         this.recipients = recipients;
         this.attachmentParameters = attachmentParameters;
+        this.dateToSend = dateToSend;
     }
 
     public void send(String from) {
@@ -52,9 +56,13 @@ public class SSLEmailSender {
             message.setFrom(new InternetAddress(from));
             setAllRecipients(message);
             message.setSubject(this.message.getSubject());
-            message.setText(this.message.getContent());
             if(attachmentParameters != null) {
                 message.setContent(createMultipartMessage());
+            } else {
+                message.setText(this.message.getContent());
+            }
+            if(dateToSend != null) {
+                message.setSentDate(dateToSend);
             }
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -63,9 +71,12 @@ public class SSLEmailSender {
     }
 
     private Multipart createMultipartMessage() throws MessagingException {
-        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText(this.message.getContent());
         Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
 
+        messageBodyPart = new MimeBodyPart();
         String file = attachmentParameters.getPath();
         String fileName = attachmentParameters.getFileName();
         DataSource source = new FileDataSource(file);
