@@ -1,6 +1,8 @@
 package com.intern.gui.controllers;
 
+import com.intern.email.EmailTimer;
 import com.intern.email.SSLEmailSender;
+import com.intern.email.SenderData;
 import com.intern.exceptions.AppException;
 import com.intern.exceptions.ExceptionMessages;
 import com.intern.model.AttachmentParameters;
@@ -10,7 +12,6 @@ import com.intern.parsers.MessageParser;
 import com.intern.parsers.RecipientsParser;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
-import com.sun.mail.iap.ParsingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,28 +26,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
 
 public class PaneController {
     @FXML
-    private Button recipientsButton;
+    private Button recipientsButton, messageButton, sendButton, attachmentButton, tooglePickersButton;
     @FXML
-    private Button messageButton;
-    @FXML
-    private Button sendButton;
-    @FXML
-    private Button attachmentButton;
-    @FXML
-    private Button tooglePickersButton;
-    @FXML
-    private Label recipientsLabel;
-    @FXML
-    private Label messageLabel;
-    @FXML
-    private Label logLabel;
-    @FXML
-    private Label attachmentLabel;
+    private Label recipientsLabel,messageLabel, logLabel, attachmentLabel;
     @FXML
     private Pane mainWindow;
     @FXML
@@ -66,7 +52,7 @@ public class PaneController {
     @FXML
     void initialize() {
         setButtonLabels();
-        resetLabels();
+        setInitialLabelsValue();
         logLabel.setText("Welcome to EmailSender !");
         isMessageFileParsed = false;
         isRecipientsFileParsed = false;
@@ -76,6 +62,8 @@ public class PaneController {
     private void hideDateAndTimePickers() {
         datePicker.setVisible(false);
         timePicker.setVisible(false);
+        datePicker.setValue(null);
+        timePicker.setValue(null);
     }
 
     private void showDateAndTimePickers() {
@@ -91,7 +79,7 @@ public class PaneController {
         tooglePickersButton.setText("Toogle pickers");
     }
 
-    private void resetLabels() {
+    private void setInitialLabelsValue() {
         recipientsLabel.setText("Choose txt file with recipients");
         messageLabel.setText("Choose txt file with message content");
         attachmentLabel.setText("Choose file as attachment");
@@ -156,8 +144,6 @@ public class PaneController {
     public void onMouseToogleButtonClicked() {
         if(datePicker.isVisible() && timePicker.isVisible()) {
             hideDateAndTimePickers();
-            datePicker.setValue(null);
-            timePicker.setValue(null);
         } else {
             showDateAndTimePickers();
         }
@@ -171,13 +157,18 @@ public class PaneController {
             Date dateToSend;
             try {
                 dateToSend = createDate(datePicker.getValue(), timePicker.getValue());
-                SSLEmailSender sslEmailSender = new SSLEmailSender(message, recipients, attachmentParameters, dateToSend);
-                sslEmailSender.send("ppwjj.andrzejkowalski@gmail.com");
+                SSLEmailSender sslEmailSender = new SSLEmailSender(message, recipients, attachmentParameters);
+                if(dateToSend != null) {
+                    EmailTimer emailTimer = new EmailTimer(sslEmailSender, dateToSend);
+                    emailTimer.start();
+                } else {
+                    sslEmailSender.send(SenderData.EMAIL);
+                }
                 logLabel.setText("Message was send successfully !");
                 isMessageFileParsed = false;
                 isRecipientsFileParsed = false;
                 attachmentParameters = null;
-                resetLabels();
+                setInitialLabelsValue();
             } catch (AppException e) {
                 logLabel.setText(e.getMessage());
                 e.printStackTrace();

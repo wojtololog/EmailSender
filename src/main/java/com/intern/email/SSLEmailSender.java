@@ -17,13 +17,11 @@ public class SSLEmailSender {
     private com.intern.model.Message message;
     private Recipients recipients;
     private AttachmentParameters attachmentParameters;
-    private Date dateToSend;
 
-    public SSLEmailSender(com.intern.model.Message message, Recipients recipients, AttachmentParameters attachmentParameters, Date dateToSend) {
+    public SSLEmailSender(com.intern.model.Message message, Recipients recipients, AttachmentParameters attachmentParameters) {
         this.message = message;
         this.recipients = recipients;
         this.attachmentParameters = attachmentParameters;
-        this.dateToSend = dateToSend;
     }
 
     public void send(String from) {
@@ -31,7 +29,7 @@ public class SSLEmailSender {
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("ppwj.andrzejkowalski","WojciecHl@c69");
+                        return new PasswordAuthentication(SenderData.getUserNameFromEmail(),SenderData.PASSWORD);
                     }
                 });
 
@@ -39,7 +37,7 @@ public class SSLEmailSender {
             Message messageToSend = buildMessage(session, from);
 
             Transport transport = session.getTransport("smtp");
-            transport.connect("smtp.gmail.com","ppwj.andrzejkowalski", "WojciecHl@c69");
+            transport.connect("smtp.gmail.com",SenderData.getUserNameFromEmail(), SenderData.PASSWORD);
             Transport.send(messageToSend, messageToSend.getAllRecipients());
             transport.close();
 
@@ -60,9 +58,6 @@ public class SSLEmailSender {
                 message.setContent(createMultipartMessage());
             } else {
                 message.setText(this.message.getContent());
-            }
-            if(dateToSend != null) {
-                message.setSentDate(dateToSend);
             }
         } catch (MessagingException e) {
             e.printStackTrace();

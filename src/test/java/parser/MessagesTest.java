@@ -1,5 +1,6 @@
 package parser;
 
+import com.intern.email.SenderData;
 import com.intern.exceptions.AppException;
 import com.intern.parsers.MessageParser;
 import com.sun.mail.iap.ParsingException;
@@ -41,5 +42,4 @@ public class MessagesTest {
         MessageParser messageParser = new MessageParser(targetStream);
         messageParser.parse();
     }
-
 }
