@@ -31,7 +31,7 @@ public class RecipientsTest {
         recipientsParser.parse();
         ArrayList<String> toRecipients = recipientsParser.getRecipients().getNormalSenders();
 
-        Assert.assertEquals("rutkowski@detektyw.pl", toRecipients.get(0));
+        Assert.assertEquals("wojtololog@gmail.com", toRecipients.get(0));
     }
 
     @Test

@@ -1,0 +1,14 @@
+com\intern\email\SSLEmailSender$1.class
+com\intern\email\EmailTimer.class
+com\intern\email\EmailTimer$1.class
+com\intern\exceptions\AppException.class
+com\intern\model\Recipients.class
+com\intern\exceptions\ExceptionMessages.class
+com\intern\gui\controllers\PaneController.class
+com\intern\model\Message.class
+com\intern\model\AttachmentParameters.class
+com\intern\gui\FXApp.class
+com\intern\email\SenderData.class
+com\intern\email\SSLEmailSender.class
+com\intern\parsers\MessageParser.class
+com\intern\parsers\RecipientsParser.class

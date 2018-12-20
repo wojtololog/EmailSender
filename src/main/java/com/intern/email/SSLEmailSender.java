@@ -13,17 +13,42 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * handling sending email message via ssl
+ */
 public class SSLEmailSender {
+    /**
+     * stores content and subject of email message
+     * @see com.intern.model.Message
+     */
     private com.intern.model.Message message;
+    /**
+     * stores recipients of message
+     * @see Recipients
+     */
     private Recipients recipients;
+    /**
+     * stores attachment parameters
+     * @see AttachmentParameters
+     */
     private AttachmentParameters attachmentParameters;
 
+    /**
+     * Initialize class fields
+     * @param message message to send
+     * @param recipients lists of recipients
+     * @param attachmentParameters attachment params
+     */
     public SSLEmailSender(com.intern.model.Message message, Recipients recipients, AttachmentParameters attachmentParameters) {
         this.message = message;
         this.recipients = recipients;
         this.attachmentParameters = attachmentParameters;
     }
 
+    /**
+     * Send email message
+     * @param from email address of sender
+     */
     public void send(String from) {
         Session session = Session.getInstance(createSessionProperties(),
                 new Authenticator() {
@@ -48,6 +73,13 @@ public class SSLEmailSender {
         }
     }
 
+    /**
+     * build email message to send
+     * @param session session parameters
+     * @see Session
+     * @param from email address of sender
+     * @return message object ready to send
+     */
     private Message buildMessage(Session session, String from) {
         Message message = new MimeMessage(session);
         try {
@@ -65,6 +97,11 @@ public class SSLEmailSender {
        return message;
     }
 
+    /**
+     * if there is attachment we have to build multipart message (MIME standard)
+     * @return multipart message object
+     * @throws MessagingException throws MessagingExceptions
+     */
     private Multipart createMultipartMessage() throws MessagingException {
         BodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.setText(this.message.getContent());
@@ -81,6 +118,11 @@ public class SSLEmailSender {
         return multipart;
     }
 
+    /**
+     * set recipients of message from recipients object (class field)
+     * @param message message to send
+     * @throws MessagingException throws MessagingExceptions
+     */
     private void setAllRecipients(Message message) throws MessagingException {
         ArrayList<String> normalRecipients = recipients.getNormalSenders();
         if(normalRecipients != null) {
@@ -102,6 +144,10 @@ public class SSLEmailSender {
         }
     }
 
+    /**
+     * create session properties like host, port etc.
+     * @return properties object
+     */
     private Properties createSessionProperties() {
         Properties properties = System.getProperties();
         properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");

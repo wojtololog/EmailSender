@@ -7,22 +7,39 @@ import com.sun.mail.iap.ParsingException;
 
 import java.io.*;
 
+/**
+ * Class which parses e-mail recipients list in .txt format
+ */
 public class RecipientsParser {
+    /**
+     * It holds text file as input stream.
+     * @see InputStream
+     */
     private InputStream inputWithRecipients;
-    private BufferedReader bufferedReader;
-    private String nextLine;
 
+    /**
+     * Instance of class Recipients which holds lists of recipients types (TO, CC, BCC)
+     */
     private Recipients recipients;
 
+    /**
+     * Primary constructor; also create new instance of Recipients
+     * @param fileWithRecipients input stream which is created from text file
+     */
     public RecipientsParser(InputStream fileWithRecipients) {
         this.inputWithRecipients = fileWithRecipients;
         recipients = new Recipients();
     }
 
+    /**
+     * Parse input stream with recipients and create new Recipients instance
+     * @throws AppException throws exceptions
+     * @see ExceptionMessages
+     */
     public void parse() throws AppException {
-        bufferedReader = new BufferedReader(new InputStreamReader(this.inputWithRecipients));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.inputWithRecipients));
         try {
-            nextLine = bufferedReader.readLine();
+            String nextLine = bufferedReader.readLine();
             if (nextLine == null) {
                 throw new AppException(ExceptionMessages.EMPTY_FILE);
             }
@@ -38,6 +55,12 @@ public class RecipientsParser {
         }
     }
 
+    /**
+     * It adds new recipient by its type (TO, CC, BCC) to the list in Recipients
+     * @param textLine contains actual parsing text line
+     * @throws AppException throws exceptions
+     * @see ExceptionMessages
+     */
     private void addNewRecipient(String textLine) throws AppException {
         String[] splittedLine = textLine.split(";");
         if(splittedLine.length != 2) {
@@ -62,6 +85,10 @@ public class RecipientsParser {
         }
     }
 
+    /**
+     *
+     * @return get Recipients instance
+     */
     public Recipients getRecipients() {
         return recipients;
     }

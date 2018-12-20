@@ -28,27 +28,69 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * This is a controller of pane
+ */
 public class PaneController {
+    /**
+     * Dependency injection of all buttons in GUI
+     */
     @FXML
     private Button recipientsButton, messageButton, sendButton, attachmentButton, tooglePickersButton;
+    /**
+     * Dependency injection of all labels in GUI
+     */
     @FXML
     private Label recipientsLabel,messageLabel, logLabel, attachmentLabel;
+    /**
+     * Dependency injection of pane as a element of GUI
+     */
     @FXML
     private Pane mainWindow;
+    /**
+     * Dependency injection of date picker
+     */
     @FXML
     private JFXDatePicker datePicker;
+    /**
+     * Dependency injection of time picker
+     */
     @FXML
     private JFXTimePicker timePicker;
 
+    /**
+     * instance of FileChooser which is responsible for managing window with file picking
+     */
     private FileChooser fileChooser;
+    /**
+     * Contains all stage of GUI
+     */
     private Stage stage;
 
+    /**
+     * Instance of MessageParser
+     * @see MessageParser
+     */
     private MessageParser messageParser;
+    /**
+     * Instance of RecipientsParser
+     * @see RecipientsParser
+     */
     private RecipientsParser recipientsParser;
+    /**
+     * Instance of AttachmentParameters
+     * @see AttachmentParameters
+     */
     private AttachmentParameters attachmentParameters;
 
+    /**
+     * flags to determine if files with message or recipients is parsed already
+     */
     private boolean isMessageFileParsed, isRecipientsFileParsed;
 
+    /**
+     * Setting initial values of variables and controlls
+     */
     @FXML
     void initialize() {
         setButtonLabels();
@@ -59,6 +101,9 @@ public class PaneController {
         hideDateAndTimePickers();
     }
 
+    /**
+     * hide time and date pickers in GUI and set its value to null
+     */
     private void hideDateAndTimePickers() {
         datePicker.setVisible(false);
         timePicker.setVisible(false);
@@ -66,11 +111,17 @@ public class PaneController {
         timePicker.setValue(null);
     }
 
+    /**
+     * show time and date pickers in GUI
+     */
     private void showDateAndTimePickers() {
         datePicker.setVisible(true);
         timePicker.setVisible(true);
     }
 
+    /**
+     * set all buttons label in GUI
+     */
     private void setButtonLabels() {
         recipientsButton.setText("Add recipients");
         messageButton.setText("Add content of message");
@@ -79,12 +130,18 @@ public class PaneController {
         tooglePickersButton.setText("Toogle pickers");
     }
 
+    /**
+     * set starting value label
+     */
     private void setInitialLabelsValue() {
         recipientsLabel.setText("Choose txt file with recipients");
         messageLabel.setText("Choose txt file with message content");
         attachmentLabel.setText("Choose file as attachment");
     }
 
+    /**
+     * actions after button with label "Add content of message" is clicked
+     */
     @FXML
     public void onMouseMessageButtonClicked() {
         stage = (Stage) mainWindow.getScene().getWindow();
@@ -106,6 +163,9 @@ public class PaneController {
         }
     }
 
+    /**
+     * actions after button with label "Add recipients" is clicked
+     */
     @FXML
     public void onMouseRecipientsButtonClicked() {
         stage = (Stage) mainWindow.getScene().getWindow();
@@ -127,6 +187,9 @@ public class PaneController {
         }
     }
 
+    /**
+     * actions after button with label "Add attachemnt" is clicked
+     */
     @FXML
     public void onMouseAttachmentButtonClicked() {
         stage = (Stage) mainWindow.getScene().getWindow();
@@ -140,6 +203,9 @@ public class PaneController {
         }
     }
 
+    /**
+     * actions after button with label "Toogle picker" is clicked
+     */
     @FXML
     public void onMouseToogleButtonClicked() {
         if(datePicker.isVisible() && timePicker.isVisible()) {
@@ -149,6 +215,9 @@ public class PaneController {
         }
     }
 
+    /**
+     * actions after button with label "Send" is clicked
+     */
     @FXML
     public void onMouseSendButtonClicked() {
         if(isRecipientsFileParsed && isMessageFileParsed) {
@@ -178,6 +247,15 @@ public class PaneController {
         }
     }
 
+    /**
+     * It creates Date format from LocalDate and LocalTime
+     * @see Date
+     * @param localDate date retrieved from date picker
+     * @param localTime time retrieved from time picker
+     * @return date in which is formatted as Date
+     * @throws AppException throws exceptions
+     * @see ExceptionMessages
+     */
     private Date createDate(LocalDate localDate, LocalTime localTime) throws AppException {
         if(localDate == null && localTime == null) {
             return null;

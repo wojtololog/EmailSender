@@ -1,2 +1,12 @@
-F:\studia\semestr7\javaProjekt\EmailSender\src\main\java\com\intern\email\SSLEmailSender.java
-F:\studia\semestr7\javaProjekt\EmailSender\src\main\java\com\intern\gui\FXApp.java
+G:\semestr6\EmailSender\src\main\java\com\intern\email\SenderData.java
+G:\semestr6\EmailSender\src\main\java\com\intern\exceptions\ExceptionMessages.java
+G:\semestr6\EmailSender\src\main\java\com\intern\parsers\MessageParser.java
+G:\semestr6\EmailSender\src\main\java\com\intern\gui\controllers\PaneController.java
+G:\semestr6\EmailSender\src\main\java\com\intern\gui\FXApp.java
+G:\semestr6\EmailSender\src\main\java\com\intern\model\AttachmentParameters.java
+G:\semestr6\EmailSender\src\main\java\com\intern\exceptions\AppException.java
+G:\semestr6\EmailSender\src\main\java\com\intern\parsers\RecipientsParser.java
+G:\semestr6\EmailSender\src\main\java\com\intern\email\SSLEmailSender.java
+G:\semestr6\EmailSender\src\main\java\com\intern\model\Message.java
+G:\semestr6\EmailSender\src\main\java\com\intern\email\EmailTimer.java
+G:\semestr6\EmailSender\src\main\java\com\intern\model\Recipients.java
