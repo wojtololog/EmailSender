@@ -6,6 +6,7 @@ import com.intern.email.SenderData;
 import com.intern.exceptions.AppException;
 import com.intern.exceptions.ExceptionMessages;
 import com.intern.model.AttachmentParameters;
+import com.intern.model.IntervalParameters;
 import com.intern.model.Message;
 import com.intern.model.Recipients;
 import com.intern.parsers.MessageParser;
@@ -13,8 +14,7 @@ import com.intern.parsers.RecipientsParser;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -57,6 +57,17 @@ public class PaneController {
      */
     @FXML
     private JFXTimePicker timePicker;
+    /**
+     * Dependency injection of spinners
+     */
+    @FXML
+    private Spinner<Integer> repetitionSpinner, intervalSpinner;
+
+    /**
+     * Dependency injection of checkbutton
+     */
+    @FXML
+    private CheckBox activationIntervalCheckButton;
 
     /**
      * instance of FileChooser which is responsible for managing window with file picking
@@ -95,10 +106,23 @@ public class PaneController {
     void initialize() {
         setButtonLabels();
         setInitialLabelsValue();
+        initializeSpinners();
         logLabel.setText("Welcome to EmailSender !");
         isMessageFileParsed = false;
         isRecipientsFileParsed = false;
         hideDateAndTimePickers();
+    }
+
+    /**
+     * setting min and max value of each spinner and its initial value
+     */
+    private void initializeSpinners() {
+        final int initalValueOfRepetition = 5;
+        final int initalValueOfInterval = 60;
+        SpinnerValueFactory<Integer> repetitionSpinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,50,initalValueOfRepetition);
+        SpinnerValueFactory<Integer> intervalSpinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,3600,initalValueOfInterval);
+        repetitionSpinner.setValueFactory(repetitionSpinnerValueFactory);
+        intervalSpinner.setValueFactory(intervalSpinnerValueFactory);
     }
 
     /**
@@ -228,8 +252,14 @@ public class PaneController {
                 dateToSend = createDate(datePicker.getValue(), timePicker.getValue());
                 SSLEmailSender sslEmailSender = new SSLEmailSender(message, recipients, attachmentParameters);
                 if(dateToSend != null) {
-                    EmailTimer emailTimer = new EmailTimer(sslEmailSender, dateToSend);
-                    emailTimer.start();
+                    if(activationIntervalCheckButton.isSelected()) {
+                        IntervalParameters intervalParameters = new IntervalParameters(repetitionSpinner.getValue(), intervalSpinner.getValue());
+                        EmailTimer emailTimer = new EmailTimer(sslEmailSender, dateToSend, intervalParameters);
+                        emailTimer.start();
+                    } else {
+                        EmailTimer emailTimer = new EmailTimer(sslEmailSender, dateToSend);
+                        emailTimer.start();
+                    }
                 } else {
                     sslEmailSender.send(SenderData.EMAIL);
                 }

@@ -3,7 +3,9 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -24,5 +26,10 @@
       <JFXDatePicker fx:id="datePicker" layoutX="37.0" layoutY="491.0" />
       <JFXTimePicker fx:id="timePicker" layoutX="287.0" layoutY="491.0" />
       <Button fx:id="tooglePickersButton" layoutX="142.0" layoutY="555.0" mnemonicParsing="false" onMouseClicked="#onMouseToogleButtonClicked" prefHeight="51.0" prefWidth="195.0" text="Button" />
+      <Spinner fx:id="repetitionSpinner" layoutX="676.0" layoutY="73.0" />
+      <Spinner fx:id="intervalSpinner" layoutX="676.0" layoutY="148.0" />
+      <CheckBox fx:id="activationIntervalCheckButton" layoutX="760.0" layoutY="192.0" mnemonicParsing="false" text="Activate" />
+      <Label layoutX="675.0" layoutY="50.0" prefHeight="17.0" prefWidth="195.0" text="Sending repetiton (1-50)" />
+      <Label layoutX="675.0" layoutY="124.0" prefHeight="17.0" prefWidth="213.0" text="Sending interval (1-3600s)" />
    </children>
 </Pane>
