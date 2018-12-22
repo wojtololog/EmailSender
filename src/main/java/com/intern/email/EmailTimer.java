@@ -54,7 +54,8 @@ public class EmailTimer {
     }
 
     /**
-     * start counting to dateToSend by Timer in background thread and if done it send email and stops timer
+     * start counting to dateToSend by Timer in background thread and if done it send email and stops timer;
+     * when optional constructor is used it send message with proper time interval
      */
     public void start() {
         timer.schedule(new TimerTask() {

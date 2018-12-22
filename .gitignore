@@ -24,3 +24,4 @@ hs_err_pid*
 .idea*
 /EmailSender.iml
 /target/*
+/target/test-classes/parsers/recipients/singleRecipient.txt
